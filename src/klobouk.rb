@@ -22,5 +22,12 @@ puts '
 '
 
 
-user = Login.login
-puts user
+# user = Login.login
+# Index.index user
+Index.index 'de-alchmst'
+
+puts '
+###################
+## Vrať se brzy! ##
+###################
+'
