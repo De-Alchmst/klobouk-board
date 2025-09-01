@@ -27,9 +27,9 @@ unless DEBUG
   user = Login.login
   Index.index user
 else
-  #Index.index 'de-alchmst'
-  require_relative 'lib/post_help'
-  PostHelp.post_help
+  Index.index 'de-alchmst'
+  # require_relative 'lib/post_help'
+  # PostHelp.post_help
 end
 
 puts '

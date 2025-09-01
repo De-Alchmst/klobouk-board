@@ -39,7 +39,7 @@ module Screen
 
     handle_word = -> (word){
       if word.length > max_width
-        # TODO test too long words in parse_text
+        #                ↓ also count in added space
         bar = max_width -2- line.length
         # what fits                     
         handle_word.call word[(..bar)]

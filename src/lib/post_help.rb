@@ -1,6 +1,6 @@
 require_relative 'screen'
 
-# TODO: make help screen somewhat decent looking
+# TODO: make help screen scroll
 module PostHelp
 @help = '
 Pokud příspěvek (nikoli však prozpěvek) je začátkem nového vlákna, tudíž není
