@@ -14,5 +14,6 @@ name = ARGV[0]
 pass = ARGV[1]
 
 File.write USER_DIR + name, JSON.pretty_generate({
-  password: BCrypt::Password.create(pass)
+  name: name,
+  password: BCrypt::Password.create(pass),
 })
