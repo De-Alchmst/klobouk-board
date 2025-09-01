@@ -6,22 +6,27 @@ require_relative 'entry_handle'
 module Board
   HELP_BAR_TEXT = \
     "Pomoc (h) | Nový (n) | Posunout (↑↓) | Vybrat | (↵) | Odejít (q)"
+  @entries = []
   @width = 0
   @taken_by_title = 0
   @title_lines = []
 
   def self.board(user, board)
-    entries = Fileops.get_board_entries(board)
-    @width = 0
+    reset_board board
     while true
-      draw_board board, entries
-      return if handle_input user, board, entries
+      draw_board board
+      return if handle_input user, board
     end
   end
 
   private
 
-  def self.draw_board(board, entries)
+  def self.reset_board board
+    @entries = Fileops.get_board_entries(board)
+    @width = 0
+  end
+
+  def self.draw_board(board)
     Screen.clear
 
     width = Screen.width
@@ -32,7 +37,7 @@ module Board
 
     print_title
    
-    if entries.empty?
+    if @entries.empty?
       puts "Tahle nástěnka je prázdná jak moje peněženka. " \
          + "Co takhle to napravit?"
              end
@@ -59,7 +64,7 @@ module Board
   end
 
 
-  def self.handle_input(user, board, entries)
+  def self.handle_input(user, board)
     ch = Screen.getch
     case ch
     when "q"
@@ -72,7 +77,8 @@ module Board
       PostHelp.post_help
 
     when "n"
-      EntryHandle.write_new user, board
+      EntryHandle.new_entry user, board
+      reset_board board
       
     end
     return false

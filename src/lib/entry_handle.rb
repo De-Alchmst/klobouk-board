@@ -4,9 +4,10 @@ require_relative 'fileops'
 require_relative 'screen'
 
 module EntryHandle
-  def self.write_new(user, board)
+  def self.new_entry(user, board)
     contents = edit ""
     return if contents.empty? # <cancel>
+    Fileops.write_new_entry user, board, contents
   end
 
   private

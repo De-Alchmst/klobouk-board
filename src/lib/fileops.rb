@@ -5,8 +5,8 @@ require 'bcrypt'
 # <title>
 # ;;
 # {
-#   "author": <author>
-#   "time": <time>
+#   "author": <author>,
+#   "time": <time>,
 #   "contents": <contents>
 # }
 # ;;
@@ -57,10 +57,39 @@ module Fileops
     }
   end
 
+
+  def self.write_new_entry(user_data, board_data, contents)
+    title = contents.split("\n")[0]
+    id = get_next_id board_data["name"]
+    File.write BOARDS + board_data["name"] + "/" + id.to_s,
+      title + "\n;;\n" + JSON.pretty_generate({
+        "author": user_data["name"],
+        "time": get_time,
+        "contents": contents
+      })
+  end
+
   private
 
   def self.read_json filename
     return {} unless File.readable? filename
     return JSON.parse File.read filename
+  end
+
+
+  def self.get_next_id(board)
+    f = File.open BOARDS + board + "/next_id", "r+"
+    id = f.read.to_i
+    f.rewind
+    f.write "#{id+1}"
+    f.close
+    return id
+  end
+
+
+  def self.get_time
+    # Tento formát je validní!
+    # https://prirucka.ujc.cas.cz/?id=810
+    Time.now.getlocal("+02:00").strftime("%d.%m.%Y %H:%M")
   end
 end
