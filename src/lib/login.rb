@@ -7,7 +7,7 @@ module Login
   def self.login
     while true
       user_data = prompt_username
-      return user_data["name"] if prompt_password user_data
+      return user_data if prompt_password user_data
       puts "Špatné heslo!"
     end
   end

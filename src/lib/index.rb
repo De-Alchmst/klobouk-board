@@ -1,7 +1,6 @@
-require 'io/console'
-
 require_relative 'fileops'
 require_relative 'screen'
+require_relative 'user_config'
 
 module Index
   @boards_data = Fileops.get_boards
@@ -11,7 +10,7 @@ module Index
   def self.index(user)
     until @exit 
       draw_index
-      handle_input
+      handle_input user
     end
   end
 
@@ -40,13 +39,16 @@ Nástěnky:"
   end
 
 
-  def self.handle_input
-    STDIN.echo = false
-    ch = STDIN.getch
-
-    case ch
-    when 'q', "\x03" # ^C
+  def self.handle_input(user)
+    case Screen.getch
+    when 'q'
       @exit=true
+
+    when "\x03" # ^C
+      exit 0
+
+    when 'u'
+      USER_CONFIG.user_config user
     end
   end
 end

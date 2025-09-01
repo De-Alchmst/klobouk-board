@@ -1,4 +1,5 @@
 require 'json'
+require 'bcrypt'
 
 module Fileops
   HERE   = File.dirname File.dirname __FILE__
@@ -13,6 +14,12 @@ module Fileops
 
   def self.get_boards
     read_json BOARDS + "index.json"
+  end
+
+
+  def self.change_password(user_data, password)
+    user_data["password"] = BCrypt::Password.create password
+    File.write USERS + user_data["name"], JSON.pretty_generate(user_data)
   end
 
   private

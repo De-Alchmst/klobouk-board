@@ -1,3 +1,5 @@
+require 'io/console'
+
 module Screen
   def self.getWidth
     80
@@ -11,5 +13,11 @@ module Screen
 
   def self.clear
     print "\ec"
+  end
+
+
+  def self.getch
+    STDIN.echo = false
+    STDIN.getch
   end
 end

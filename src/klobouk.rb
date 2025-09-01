@@ -2,6 +2,8 @@
 require_relative 'lib/login'
 require_relative 'lib/index'
 
+DEBUG = ARGV[0] == "debug"
+
 HERE = File.dirname __FILE__
 
 
@@ -21,10 +23,12 @@ puts '
 
 '
 
-
-# user = Login.login
-# Index.index user
-Index.index 'de-alchmst'
+unless DEBUG
+  user = Login.login
+  Index.index user
+else
+  Index.index 'de-alchmst'
+end
 
 puts '
 ###################
