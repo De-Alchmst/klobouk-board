@@ -10,8 +10,9 @@ gem install bcrypt
 ```
 [
     {
-        "name": <name>,
-        "key": <key>
+        "name": "<name>",
+        "key": "<key>"
+        "description": "<description>"
     }
     ...
 ]

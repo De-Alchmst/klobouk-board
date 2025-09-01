@@ -3,7 +3,7 @@ require 'io/console'
 require_relative 'fileops'
 require_relative 'screen'
 
-module USER_CONFIG
+module UserConfig
   @exit = false
 
   def self.user_config(user)

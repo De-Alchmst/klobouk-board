@@ -1,6 +1,7 @@
 require_relative 'fileops'
 require_relative 'screen'
 require_relative 'user_config'
+require_relative 'board'
 
 module Index
   @boards_data = Fileops.get_boards
@@ -23,9 +24,9 @@ module Index
   Odejít (q)
   Nastavení účtu (u)
 
-She-Mail:
+She-Mail: <zatím neimplementováno>
   Schránka (s)
-  Nová zpráva (z)
+  Nová zpráva (z) 
 
 Nástěnky:"
     list_boards
@@ -40,7 +41,8 @@ Nástěnky:"
 
 
   def self.handle_input(user)
-    case Screen.getch
+    ch = Screen.getch
+    case ch
     when 'q'
       @exit=true
 
@@ -48,7 +50,13 @@ Nástěnky:"
       exit 0
 
     when 'u'
-      USER_CONFIG.user_config user
+      UserConfig.user_config user
     end
+
+    @boards_data.each {|board|
+      if ch = board["key"]
+        Board.board user, board
+      end
+    }
   end
 end
