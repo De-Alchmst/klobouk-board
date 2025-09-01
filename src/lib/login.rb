@@ -28,7 +28,7 @@ module Login
 
 
   def self.prompt_password(user_data)
-    password = STDIN.getpass 'Heslo: '
+    password = STDIN.getpass('Heslo: ').strip
     return BCrypt::Password.new(user_data["password"]) == password
   end
 end

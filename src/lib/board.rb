@@ -1,6 +1,7 @@
 require_relative 'fileops'
 require_relative 'screen'
 require_relative 'post_help'
+require_relative 'entry_handle'
 
 module Board
   HELP_BAR_TEXT = \
@@ -14,7 +15,7 @@ module Board
     @width = 0
     while true
       draw_board board, entries
-      return if handle_input user, entries
+      return if handle_input user, board, entries
     end
   end
 
@@ -58,7 +59,7 @@ module Board
   end
 
 
-  def self.handle_input(user, entries)
+  def self.handle_input(user, board, entries)
     ch = Screen.getch
     case ch
     when "q"
@@ -69,6 +70,9 @@ module Board
 
     when "h"
       PostHelp.post_help
+
+    when "n"
+      EntryHandle.write_new user, board
       
     end
     return false
