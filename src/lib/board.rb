@@ -5,15 +5,16 @@ require_relative 'post_help'
 module Board
   HELP_BAR_TEXT = \
     "Pomoc (h) | Nový (n) | Posunout (↑↓) | Vybrat | (↵) | Odejít (q)"
-  @exit = false
-  @prev_width = 0
+  @width = 0
   @taken_by_title = 0
+  @title_lines = []
 
   def self.board(user, board)
     entries = Fileops.get_board_entries(board)
-    until @exit
+    @width = 0
+    while true
       draw_board board, entries
-      handle_input user, entries
+      return if handle_input user, entries
     end
   end
 
@@ -25,9 +26,11 @@ module Board
     width = Screen.width
     if width != @width
       @width = width
-      print_title board
+      setup_title board
     end
 
+    print_title
+   
     if entries.empty?
       puts "Tahle nástěnka je prázdná jak moje peněženka. " \
          + "Co takhle to napravit?"
@@ -37,21 +40,21 @@ module Board
   end
 
 
-  def self.print_title(board)
-    width = Screen.width
-    Screen.puts_center board["name"]
+  def self.print_title
+    @title_lines.each {|line| puts line}
+  end
 
-    lines = Screen.parse_text board["description"]
-    lines.each {|line|
-      Screen.puts_center line
+
+  def self.setup_title(board)
+    @title_lines = [ Screen.center(board["name"]) ]
+    Screen.parse_text(board["description"]).each {|line|
+      @title_lines << Screen.center(line) 
     }
-
-    @taken_by_title = 1 + lines.count
   end
 
 
   def self.print_help_bar
-    print "\e[#{Screen.height-1};0H#{HELP_BAR_TEXT[(..@width-1)]}"
+    print "\e[#{Screen.height};0H#{HELP_BAR_TEXT[(..@width-1)]}"
   end
 
 
@@ -59,7 +62,7 @@ module Board
     ch = Screen.getch
     case ch
     when "q"
-      @exit = true
+      return true
 
     when "\x03"
       exit 0
@@ -68,5 +71,6 @@ module Board
       PostHelp.post_help
       
     end
+    return false
   end
 end

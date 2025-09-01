@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 require_relative 'lib/login'
 require_relative 'lib/index'
+require_relative 'lib/screen'
 
 DEBUG = ARGV[0] == "debug"
 
@@ -27,11 +28,12 @@ unless DEBUG
   user = Login.login
   Index.index user
 else
-  Index.index 'de-alchmst'
+  Index.index Fileops.get_user_data 'de-alchmst'
   # require_relative 'lib/post_help'
   # PostHelp.post_help
 end
 
+Screen.clear
 puts '
 ###################
 ## Vrať se brzy! ##

@@ -4,12 +4,10 @@ require_relative 'fileops'
 require_relative 'screen'
 
 module UserConfig
-  @exit = false
-
   def self.user_config(user)
     until @exit
       draw_config user
-      handle_input user
+      return if handle_input user
     end
   end
 
@@ -42,7 +40,7 @@ module UserConfig
   def self.handle_input(user)
     case Screen.getch
     when 'q'
-      @exit=true
+      return true
 
     when "\x03" # ^C
       exit 0
@@ -50,5 +48,6 @@ module UserConfig
     when 'h'
       new_password(user)
     end
+    return false
   end
 end

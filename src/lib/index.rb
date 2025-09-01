@@ -9,9 +9,9 @@ module Index
 
 
   def self.index(user)
-    until @exit 
+    while true
       draw_index
-      handle_input user
+      return if handle_input user
     end
   end
 
@@ -42,9 +42,10 @@ Nástěnky:"
 
   def self.handle_input(user)
     ch = Screen.getch
+    puts ch
     case ch
     when 'q'
-      @exit=true
+      return true
 
     when "\x03" # ^C
       exit 0
@@ -54,9 +55,11 @@ Nástěnky:"
     end
 
     @boards_data.each {|board|
-      if ch = board["key"]
+      if ch == board["key"]
         Board.board user, board
       end
     }
+
+    return false
   end
 end

@@ -22,10 +22,10 @@ module Screen
   end
 
 
-  def self.puts_center(txt)
+  def self.center(txt)
     pad = (width - txt.length) / 2 
     pad = 0 if pad < 0
-    puts " "*pad + txt 
+    " "*pad + txt 
   end
 
   
