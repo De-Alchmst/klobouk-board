@@ -31,7 +31,7 @@ module UserConfig
       puts "Hesla se neschodují..."
     else
       puts "Heslo změněno!"
-      Fileops.change_password user, pass1
+      Fileops.change_password user, pass1.strip.gsub "\u0000", ""
     end
     Screen.getch
   end

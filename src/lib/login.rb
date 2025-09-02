@@ -28,7 +28,8 @@ module Login
 
 
   def self.prompt_password(user_data)
-    password = STDIN.getpass('Heslo: ').strip
+    # .strip does not strip 0 on my server implementation for some reason
+    password = STDIN.getpass('Heslo: ').strip.gsub "\u0000", ""
     return BCrypt::Password.new(user_data["password"]) == password
   end
 end
