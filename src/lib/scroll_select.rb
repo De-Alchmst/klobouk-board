@@ -51,6 +51,18 @@ class ScrollSelect
   end
 
 
+  def bottom
+    @pointer = @options.count-1
+    @scroll = @options.count - @height if @options.count > @height
+  end
+
+
+  def top
+    @pointer = 0
+    @scroll = 0
+  end
+
+
   def select
     @activator.call @options[@pointer]
   end

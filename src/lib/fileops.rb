@@ -42,7 +42,7 @@ module Fileops
   end
 
 
-  def self.get_board_entries board_data
+  def self.get_board_entries(board_data) 
     path = BOARDS + board_data["name"] + "/"
     # return sorted by time, newest first, ignore 'next_id'
     return `ls -t #{path}`.split.filter {|e| e != "next_id"}.map {|name|
@@ -55,6 +55,14 @@ module Fileops
         "name"  => name,
         "title" => title,
       }
+    }
+  end
+
+
+  def self.get_entry_posts(entry_data) 
+    path = BOARDS + entry_data["board"]["name"] + "/" + entry_data["name"]
+    return File.read(path).split("\n;;\n")[(1..)].map {|entry|
+      JSON.parse(entry)
     }
   end
 

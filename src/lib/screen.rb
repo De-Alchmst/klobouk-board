@@ -67,7 +67,7 @@ module Screen
       end
     }
 
-    txt.split("\n```\n").each {|block|
+    txt.split(/^```$/).each {|block|
       unless pre
         block.split(/\n{2,}/).each{|par|
           par.split.each {|word| handle_word.call word}

@@ -3,6 +3,7 @@ require_relative 'screen'
 require_relative 'post_help'
 require_relative 'entry_handle'
 require_relative 'scroll_select'
+require_relative 'entry_display'
 
 module Board
   HELP_BAR_TEXT = \
@@ -79,6 +80,7 @@ module Board
 
 
   def self.activate_board(entry)
+    EntryDisplay.entry_display entry, Fileops.get_entry_posts(entry)
   end
 
 
@@ -110,6 +112,22 @@ module Board
         @scroll_select.up
       when "B"
         @scroll_select.down
+
+      # home/end
+      # "\e[HF"
+      when "H"
+        @scroll_select.top
+      when "F"
+        @scroll_select.bottom
+
+      # page up and down
+      # "\e[5/6~"
+      when "5"
+        10.times { @scroll_select.up }
+        STDIN.getch
+      when "6"
+        10.times { @scroll_select.down }
+        STDIN.getch
       end
     end
     return false
