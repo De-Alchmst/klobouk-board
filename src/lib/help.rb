@@ -15,6 +15,9 @@ Podobně jako v Markdownu, odstavce se dělí dvěmi novými řádky (\n\n)
 a zapomoci tří "zpětných klíšťat" na vlastním řádku (```) (AltGr+;) se dá
 přepínat do "kódového módu", kde se žádné kulišárny neprovádějí.
 
+Jako editor se používá dialog(1).
+Pro smazání prázdného řádku použijte <Ctrl-Backspace>.
+
 Více markdown funkcí zde však nečekejte, neb jsem línej jak /\w*?/.
 
 Nechť tě provází Klobouk!
