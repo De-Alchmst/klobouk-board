@@ -45,7 +45,7 @@ module EntryDisplay
     for i in (0..posts.count-1)
       post = posts[i]
       text += "\n```\n===================\n#{i} : #{post["author"]} : " + \
-              "#{post["time"]}\n\n#{post["contents"]}\n```\n"
+              "#{post["time"]}\n```\n\n#{post["contents"]}\n"
     end
     @scroll_view.new_text text.strip
   end
