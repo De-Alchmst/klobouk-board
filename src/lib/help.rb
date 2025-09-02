@@ -53,6 +53,7 @@ Nechť tě provází Klobouk!
     ch = Screen.getch
     case ch
     when "\x03"
+      STDIN.echo = true
       exit 0
       
     when "\e"

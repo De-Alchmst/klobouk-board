@@ -94,6 +94,7 @@ module Board
       return true
 
     when "\x03"
+      STDIN.echo = true
       exit 0
 
     when "h"

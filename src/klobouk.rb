@@ -33,6 +33,7 @@ else
   # PostHelp.post_help
 end
 
+STDIN.echo = true
 Screen.clear
 puts '
 ###################

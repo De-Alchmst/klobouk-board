@@ -60,6 +60,7 @@ Nástěnky:
       return true
 
     when "\x03" # ^C
+      STDIN.echo = true
       exit 0
 
     when 'u'
