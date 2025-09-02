@@ -45,14 +45,15 @@ module Fileops
   def self.get_board_entries board_data
     path = BOARDS + board_data["name"] + "/"
     # return sorted by time, newest first, ignore 'next_id'
-    `ls -t #{path}`.split.filter {|e| e != "next_id"}.map {|name|
+    return `ls -t #{path}`.split.filter {|e| e != "next_id"}.map {|name|
       f = File.open path + name
-      title = f.readline
+      title = f.readline.strip
       f.close
+
       {
-        "board": board_data,
-        "name": name,
-        "title": title,
+        "board" => board_data,
+        "name"  => name,
+        "title" => title,
       }
     }
   end

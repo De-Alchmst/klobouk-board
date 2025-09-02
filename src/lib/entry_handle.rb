@@ -28,6 +28,15 @@ module EntryHandle
     result = file.read.strip
     file.close
     file.unlink
-    return result
+    return result.sanitize
+  end
+
+  private
+
+  # remove widechars
+  # and also emojis as a subeffect (NICE!)
+  def self.sanitize(txt)
+    # possible additions if problematic: ☺ ☹ ♠ ♣ ♥ ♦ ★ ☆ ♪ ♫
+    txt.gsub /[\p{Han}\p{Hiragana}\p{Katakana}\p{Hangul}\p{Emoji}]/, ""
   end
 end

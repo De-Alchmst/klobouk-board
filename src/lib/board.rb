@@ -2,6 +2,7 @@ require_relative 'fileops'
 require_relative 'screen'
 require_relative 'post_help'
 require_relative 'entry_handle'
+require_relative 'scroll_select'
 
 module Board
   HELP_BAR_TEXT = \
@@ -23,8 +24,12 @@ module Board
 
   def self.reset_board board
     @entries = Fileops.get_board_entries(board)
-    @width = 0
+    @width  = 0
+    @height = 0
+    # arbitary dimensions
+    @scroll_select = ScrollSelect.new @entries, method(:activate_board), 0, 10
   end
+
 
   def self.draw_board(board)
     Screen.clear
@@ -35,6 +40,13 @@ module Board
       setup_title board
     end
 
+    height = Screen.height
+    if height != @height
+      @height = height
+      @scroll_select.new_start_row @title_lines.count + 1
+      @scroll_select.new_height height - @title_lines.count - 1 
+    end
+
     print_title
    
     if @entries.empty?
@@ -43,6 +55,8 @@ module Board
              end
 
     print_help_bar
+
+    @scroll_select.draw
   end
 
 
@@ -64,6 +78,10 @@ module Board
   end
 
 
+  def self.activate_board(entry)
+  end
+
+
   def self.handle_input(user, board)
     ch = Screen.getch
     case ch
@@ -79,7 +97,20 @@ module Board
     when "n"
       EntryHandle.new_entry user, board
       reset_board board
-      
+
+    when "\r" # return is \r, which makes sense I quess...
+      @scroll_select.select
+
+    # arrow keys are composite
+    # "\e[A/B/C/D"
+    when "\e"
+      STDIN.getch # [
+      case STDIN.getch
+      when "A"
+        @scroll_select.up
+      when "B"
+        @scroll_select.down
+      end
     end
     return false
   end
