@@ -1,13 +1,14 @@
 require_relative 'fileops'
 require_relative 'screen'
-require_relative 'post_help'
+require_relative 'help'
 require_relative 'entry_handle'
 require_relative 'scroll_select'
 require_relative 'entry_display'
+require_relative 'scroll_controll'
 
 module Board
   HELP_BAR_TEXT = \
-    "Pomoc (h) | Nový (n) | Posunout (↑↓) | Vybrat | (↵) | Odejít (q)"
+  "Pomoc (h) | Nový (n) | Posunout (↑↓) | Vybrat | (↵) | Odejít (q)"
   @entries = []
   @width = 0
   @taken_by_title = 0
@@ -94,7 +95,7 @@ module Board
       exit 0
 
     when "h"
-      PostHelp.post_help
+      Help.post_help
 
     when "n"
       EntryHandle.new_entry user, board
@@ -103,32 +104,8 @@ module Board
     when "\r" # return is \r, which makes sense I quess...
       @scroll_select.select
 
-    # arrow keys are composite
-    # "\e[A/B/C/D"
     when "\e"
-      STDIN.getch # [
-      case STDIN.getch
-      when "A"
-        @scroll_select.up
-      when "B"
-        @scroll_select.down
-
-      # home/end
-      # "\e[HF"
-      when "H"
-        @scroll_select.top
-      when "F"
-        @scroll_select.bottom
-
-      # page up and down
-      # "\e[5/6~"
-      when "5"
-        10.times { @scroll_select.up }
-        STDIN.getch
-      when "6"
-        10.times { @scroll_select.down }
-        STDIN.getch
-      end
+      ScrollControll.scroll_controll @scroll_select
     end
     return false
   end

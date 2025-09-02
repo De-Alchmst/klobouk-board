@@ -1,7 +1,8 @@
 require_relative 'screen'
 require_relative 'entry_handle'
 require_relative 'scroll_view'
-require_relative 'post_help'
+require_relative 'help'
+require_relative 'scroll_controll'
 
 module EntryDisplay
   HELP_BAR_TEXT = \
@@ -59,34 +60,10 @@ module EntryDisplay
       exit 0
 
     when "h"
-      PostHelp.post_help
+      Help.post_help
       
-    # arrow keys are composite
-    # "\e[A/B/C/D"
     when "\e"
-      STDIN.getch # [
-      case STDIN.getch
-      when "A"
-        @scroll_view.up
-      when "B"
-        @scroll_view.down
-
-      # home/end
-      # "\e[HF"
-      when "H"
-        @scroll_view.top
-      when "F"
-        @scroll_view.bottom
-      
-      # page up and down
-      # "\e[5/6~"
-      when "5"
-        10.times { @scroll_view.up }
-        STDIN.getch
-      when "6"
-        10.times { @scroll_view.down }
-        STDIN.getch
-      end
+      ScrollControll.scroll_controll @scroll_view
     end
     return false
   end
