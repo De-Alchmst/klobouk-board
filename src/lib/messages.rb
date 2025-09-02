@@ -3,11 +3,18 @@ require "tempfile"
 require_relative 'fileops'
 require_relative 'screen'
 
-module EntryHandle
+module Messages
   def self.new_entry(user, board)
     contents = edit ""
     return if contents.empty? # <cancel>
     Fileops.write_new_entry user, board, contents
+  end
+
+
+  def self.new_reply(user, entry)
+    contents = edit ""
+    return if contents.empty?
+    Fileops.write_new_reply user, entry, contents
   end
 
   private

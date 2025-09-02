@@ -1,7 +1,7 @@
 require_relative 'fileops'
 require_relative 'screen'
 require_relative 'help'
-require_relative 'entry_handle'
+require_relative 'messages'
 require_relative 'scroll_select'
 require_relative 'entry_display'
 require_relative 'scroll_controll'
@@ -13,12 +13,14 @@ module Board
   @width = 0
   @taken_by_title = 0
   @title_lines = []
+  @user = nil
 
   def self.board(user, board)
+    @user = user
     reset_board board
     while true
       draw_board board
-      return if handle_input user, board
+      return if handle_input board
     end
   end
 
@@ -81,11 +83,11 @@ module Board
 
 
   def self.activate_board(entry)
-    EntryDisplay.entry_display entry, Fileops.get_entry_posts(entry)
+    EntryDisplay.entry_display @user, entry
   end
 
 
-  def self.handle_input(user, board)
+  def self.handle_input(board)
     ch = Screen.getch
     case ch
     when "q"
@@ -98,7 +100,7 @@ module Board
       Help.post_help
 
     when "n"
-      EntryHandle.new_entry user, board
+      Messages.new_entry @user, board
       reset_board board
 
     when "\r" # return is \r, which makes sense I quess...

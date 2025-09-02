@@ -1,5 +1,5 @@
 require_relative 'screen'
-require_relative 'entry_handle'
+require_relative 'messages'
 require_relative 'scroll_view'
 require_relative 'help'
 require_relative 'scroll_controll'
@@ -9,13 +9,13 @@ module EntryDisplay
     "Pomoc (h) | Odpověď (n) | Posunout (↑↓) | Odejít (q)"
 
 
-  def self.entry_display(board, posts)
+  def self.entry_display(user, entry)
     @height = Screen.height
     @scroll_view = ScrollView.new "", 0, @height - 1
-    prepare_post_text posts
+    prepare_post_text entry
     while true
       draw_entry
-      return if handle_input board, posts
+      return if handle_input user, entry
     end
   end
 
@@ -39,7 +39,8 @@ module EntryDisplay
   end
 
 
-  def self.prepare_post_text(posts)
+  def self.prepare_post_text(entry)
+    posts = Fileops.get_entry_posts(entry)
     text = ""
     for i in (0..posts.count-1)
       post = posts[i]
@@ -50,7 +51,7 @@ module EntryDisplay
   end
 
 
-  def self.handle_input(board, posts)
+  def self.handle_input(user, entry)
     ch = Screen.getch
     case ch
     when "q"
@@ -61,6 +62,10 @@ module EntryDisplay
 
     when "h"
       Help.post_help
+
+    when "n"
+      Messages.new_reply user, entry
+      prepare_post_text entry
       
     when "\e"
       ScrollControll.scroll_controll @scroll_view

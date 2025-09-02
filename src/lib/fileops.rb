@@ -78,6 +78,18 @@ module Fileops
       })
   end
 
+
+  def self.write_new_reply(user_data, entry_data, contents)
+    path = BOARDS + entry_data["board"]["name"] + "/" + entry_data["name"]
+    f = File.open path, 'a'
+    f.write "\n;;\n" + JSON.pretty_generate({
+        "author": user_data["name"],
+        "time": get_time,
+        "contents": contents
+    })
+    f.close
+  end
+
   private
 
   def self.read_json filename
